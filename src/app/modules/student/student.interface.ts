@@ -1,7 +1,9 @@
-import { Schema, model, connect } from "mongoose";
+import { Schema, model, connect, Model, Types } from "mongoose";
 
 export type IStudent = {
-  id: number;
+  id: string;
+  user: Types.ObjectId,
+  password : string;
   name: {
     firstName: string;
     middleName: string;
@@ -24,6 +26,18 @@ export type IStudent = {
       mothersPhoneNo: string;
     };
   };
+  admissionSemester: Types.ObjectId;
   email: string;
   profileImg?: string;
 };
+// for creating static
+export interface StudentModel extends Model<IStudent>{
+  isStudentExists(id : string) : Promise<IStudent | null>;
+}
+
+// for creating instance
+// export type StudentMethods = {
+//   isStudentExists(id : string) : Promise<IStudent | null>;
+// };
+
+// export type StudentModel = Model<IStudent, Record<string, never> , StudentMethods>
