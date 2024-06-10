@@ -11,6 +11,13 @@ import { Student } from "./student.model";
   };
 
 
+  const getSingleStudent = async (id: string) => {
+    const result = await Student.aggregate([{ $match: { id } }]);
+    return result;
+  };
+
+
 export const StudentServices = {
     getAllStudents,
+    getSingleStudent,
 }
