@@ -13,7 +13,7 @@ const userSchema: Schema = new Schema<TUser>(
       enum: ["in-progress", "blocked"],
       default: "in-progress",
     },
-    isDeleted: { type: Boolean, required: false },
+    isDeleted: { type: Boolean, default: false },
   },
   {
     timestamps: true,

@@ -26,7 +26,9 @@ export type IStudent = {
       mothersPhoneNo: string;
     };
   };
+  isDeleted: boolean,
   admissionSemester: Types.ObjectId;
+  academicDepartment: Types.ObjectId;
   email: string;
   profileImg?: string;
 };
@@ -35,9 +37,3 @@ export interface StudentModel extends Model<IStudent>{
   isStudentExists(id : string) : Promise<IStudent | null>;
 }
 
-// for creating instance
-// export type StudentMethods = {
-//   isStudentExists(id : string) : Promise<IStudent | null>;
-// };
-
-// export type StudentModel = Model<IStudent, Record<string, never> , StudentMethods>

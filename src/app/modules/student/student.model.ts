@@ -1,10 +1,14 @@
-import { Schema, model, connect } from "mongoose";
+import { Schema, model } from "mongoose";
 import { IStudent, StudentModel } from "./student.interface";
 import validator from 'validator';
 
 
 const studentSchema = new Schema<IStudent, StudentModel>({
-  id: { type: String },
+  id: {
+    type: String,
+    required: [true, 'ID is required'],
+    unique: true,
+  },
   user: {
     type: Schema.Types.ObjectId,
     required: [true, 'User id is required'],
@@ -16,7 +20,14 @@ const studentSchema = new Schema<IStudent, StudentModel>({
     middleName: { type: String },
     lastName: { type: String, required: true },
   },
-  gender: ["male", "female", "other"],
+  gender: {
+    type: String,
+    enum: {
+      values: ['male', 'female', 'other'],
+      message: '{VALUE} is not a valid gender',
+    },
+    required: [true, 'Gender is required'],
+  },
   dateOfBirth: { type: String },
   phoneNumber: { type: String },
   presentAddress: { type: String },
@@ -37,6 +48,14 @@ const studentSchema = new Schema<IStudent, StudentModel>({
     type: Schema.Types.ObjectId,
     ref: 'AcademicSemester'
 
+  },
+  isDeleted: {
+    type: Boolean,
+    default: false
+  },
+  academicDepartment: {
+    type: Schema.Types.ObjectId,
+    ref: 'AcademicDepartment'
   },
   email: { type: String, 
     required: true,

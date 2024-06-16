@@ -7,6 +7,8 @@ import catchAsync from "../../utils/catchAsync";
 import sendResponse from "../../utils/sendResponse";
 import httpStatus from "http-status";
 
+
+
 const getAllStudents = catchAsync(async (req: Request, res: Response) => {
   // Controller is calling the service function to get all products
   const result = await StudentServices.getAllStudents();
@@ -36,7 +38,34 @@ const getSingleStudent = catchAsync(async (req, res) => {
   });
 });
 
+const deleteStudent = catchAsync(async (req, res) => {
+  const { studentId } = req.params;
+  const result = await StudentServices.deleteStudent(studentId);
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Student is deleted succesfully',
+    data: result,
+  });
+});
+
+const updateStudent = catchAsync(async (req, res) => {
+  const { studentId } = req.params;
+  const { student } = req.body;
+  const result = await StudentServices.updateStudent(studentId, student);
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Student is deleted succesfully',
+    data: result,
+  });
+});
+
 export const StudentControllers = {
   getAllStudents,
   getSingleStudent,
+  deleteStudent,
+  updateStudent,
 };

@@ -28,7 +28,7 @@ const getAllAcademicFaculty = catchAsync(async(req, res) => {
 })
 
 
-const getAllAcademicFacultyById = catchAsync(async(req, res) => {
+const getSingleAcademicFacultyById = catchAsync(async(req, res) => {
     const id = req.params.id;
     const result = await AcademicFacultyServices.getSingleAcademicFacultyById(id);
     sendResponse(res, {
@@ -42,6 +42,6 @@ const getAllAcademicFacultyById = catchAsync(async(req, res) => {
 export const AcademicFacultyControllers = {
   createAcademicFaculty,
   getAllAcademicFaculty,
-  getAllAcademicFacultyById
+  getSingleAcademicFacultyById
   
 };
