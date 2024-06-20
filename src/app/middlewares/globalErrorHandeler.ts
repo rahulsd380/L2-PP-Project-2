@@ -3,20 +3,23 @@ import { ZodError } from "zod";
 import { TErrorSourse } from "../interface/error";
 import config from "../config";
 import handleZodError from "../errors/ZodError";
+import handleValidationError from "../errors/ValidationError";
+import handleCastError from "../errors/CastError";
+import AppError from "../errors/AppError";
+
+
 
 const globalErrorHabdeler : ErrorRequestHandler = (err, req, res, next) => {
-    let statusCode = err.statusCode || 500;
-    let message = err.message || "Something went wrong!";
+    let statusCode = 500;
+    let message ="Something went wrong!";
 
     
-
     let errorSourse: TErrorSourse = [{
         path: '',
         message: 'Something went wrong!'
     }];
 
     
-
     if(err instanceof ZodError){
         const simplifiedError = handleZodError(err);
         statusCode = simplifiedError?.statusCode;
@@ -24,10 +27,30 @@ const globalErrorHabdeler : ErrorRequestHandler = (err, req, res, next) => {
         errorSourse = simplifiedError?.errorSources
         
     }else if(err?.name === "ValidationError"){
-        const simplifiedError = handleZodError(err);
+        const simplifiedError = handleValidationError(err);
         statusCode = simplifiedError?.statusCode;
         message = simplifiedError?.message;
         errorSourse = simplifiedError?.errorSources
+    }else if(err?.name === "CastError"){
+        const simplifiedError = handleCastError(err);
+        statusCode = simplifiedError?.statusCode;
+        message = simplifiedError?.message;
+        errorSourse = simplifiedError?.errorSources
+    }
+    else if(err instanceof AppError){
+        statusCode = err?.statusCode;
+        message = err?.message;
+        errorSourse = [{
+            path: "",
+            message : err?.message
+        }]
+    }
+    else if(err instanceof Error){
+        message = err?.message;
+        errorSourse = [{
+            path: "",
+            message : err?.message
+        }]
     }
 
 

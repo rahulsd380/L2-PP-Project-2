@@ -10,8 +10,9 @@ import httpStatus from "http-status";
 
 
 const getAllStudents = catchAsync(async (req: Request, res: Response) => {
+  console.log(req.query);
   // Controller is calling the service function to get all products
-  const result = await StudentServices.getAllStudents();
+  const result = await StudentServices.getAllStudents(req.query);
   res.json({
     success: true,
     message: "Students fetched successfully!",
@@ -27,8 +28,8 @@ const getAllStudents = catchAsync(async (req: Request, res: Response) => {
 
 
 const getSingleStudent = catchAsync(async (req, res) => {
-  const { studentId } = req.params;
-  const result = await StudentServices.getSingleStudent(studentId);
+  const { id } = req.params;
+  const result = await StudentServices.getSingleStudent(id);
 
   sendResponse(res, {
     statusCode: httpStatus.OK,
@@ -39,8 +40,8 @@ const getSingleStudent = catchAsync(async (req, res) => {
 });
 
 const deleteStudent = catchAsync(async (req, res) => {
-  const { studentId } = req.params;
-  const result = await StudentServices.deleteStudent(studentId);
+  const { id } = req.params;
+  const result = await StudentServices.deleteStudent(id);
 
   sendResponse(res, {
     statusCode: httpStatus.OK,
@@ -51,9 +52,9 @@ const deleteStudent = catchAsync(async (req, res) => {
 });
 
 const updateStudent = catchAsync(async (req, res) => {
-  const { studentId } = req.params;
+  const { id } = req.params;
   const { student } = req.body;
-  const result = await StudentServices.updateStudent(studentId, student);
+  const result = await StudentServices.updateStudent(id, student);
 
   sendResponse(res, {
     statusCode: httpStatus.OK,
